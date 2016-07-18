@@ -1,28 +1,9 @@
-class List
-  attr_reader(:name, :id)
-
-  define_method(:initialize) do |attributes|
-    @name = attributes.fetch(:name)
-    @id = attributes.fetch(:id)
-  end
-
-  define_singleton_method(:all) do
-    returned_lists = DB.exec("SELECT * FROM lists;")
-    lists = []
-    returned_lists.each() do |list|
-      name = list.fetch("name")
-      id = list.fetch("id").to_i()
-      lists.push(List.new({:name => name, :id => id}))
-    end
-    lists
-  end
-
-  define_method(:save) do
-    result = DB.exec("INSERT INTO lists (name) VALUES ('#{@name}') RETURNING id;")
-    @id = result.first().fetch("id").to_i()
-  end
-
-  define_method(:==) do |another_list|
-    self.name().==(another_list.name()).&(self.id().==(another_list.id()))
-  end
+class List < ActiveRecord::Base
+  has_many(:tasks)
 end
+
+new_list = List.new({:name => 'Epicodus stuff'})
+new_list.tasks().new({:description => 'learn Active Record'}) # This would create a new task under that particular list.
+new_list.tasks().new({:description => 'pair with somebody new'})
+new_list.save() # Saves both the list and all of the new tasks created on that list.
+new_list.tasks()
