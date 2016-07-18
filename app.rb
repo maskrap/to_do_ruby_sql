@@ -21,11 +21,14 @@ get("/tasks/new") do
 end
 
 post("/tasks") do
+  @tasks = Task.all()
   description = params.fetch("description")
-  @task = Task.new({:description => description})
-  @task.save()
-  @tasks = Task.all
-  erb(:tasks)
+  @task = Task.new({:description => description, :done => false})
+ if @task.save()
+   erb(:tasks)
+ else
+   erb(:errors)
+ end
 end
 
 get("/tasks/:id") do

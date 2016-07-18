@@ -7,6 +7,14 @@ describe(Task) do
       test_task = Task.create({:description => "task", :list_id => test_list.id})
       expect(test_task.list()).to(eq(test_list))
     end
+    it('validates presence of description') do
+      task = Task.new({:description => ""})
+      expect(task.save()).to(eq(false))
+    end
+    it("ensures the length of description is at most 50 characters") do
+      task = Task.new({:description => "a".*(51)})
+      expect(task.save()).to(eq(false))
+    end
   end
   describe(".not_done") do
     it("returns the not done tasks") do
@@ -18,9 +26,3 @@ describe(Task) do
     end
   end
 end
-
-
-# it('validates presence of description') do
-#   task = Task.new({:description => ""})
-#   expect(task.save()).to(eq(false))
-# end
