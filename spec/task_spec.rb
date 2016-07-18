@@ -18,3 +18,9 @@ describe(Task) do
     end
   end
 end
+
+
+# it('validates presence of description') do
+#   task = Task.new({:description => ""})
+#   expect(task.save()).to(eq(false))
+# end

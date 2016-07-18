@@ -1,0 +1,25 @@
+<h1>Your Current Lists</h1>
+
+<% if @tasks.any?() %>
+  <h3>Here are your lists:</h3>
+
+  <ul>
+    <% @tasks.not_done().each do |task| %>
+      <li><%= task.description %></li>
+    <% end %>
+  </ul>
+
+  <ul>
+    <% @tasks.each() do |task| %>
+    <li><%= task.description %> <a href="/tasks/<%= task.id() %>/edit">Update this task's description</a></li>
+    <% end %>
+  </ul>
+
+<% else %>
+
+    <p>There are no tasks yet!</p>
+
+<% end %>
+
+<a href="/tasks/new">create a new task</a>
+<a href="/">home</a>
